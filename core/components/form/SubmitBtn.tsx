@@ -6,17 +6,17 @@ import { LoadingWave } from './LoadingWave';
 
 interface SubmitBtnProps {
     isLoading: boolean;
-    handleOnClick: () => void;
+    handleOnSubmit: () => void;
     label: string;
 }
 
-export const FormBtn: React.FC<SubmitBtnProps> = ({ isLoading, handleOnClick, label }) => {
+export const FormBtn: React.FC<SubmitBtnProps> = ({ isLoading, handleOnSubmit, label }) => {
     return (
         <View>
             {isLoading ? (
                 <LoadingWave />
             ) : (
-                <Pressable style={styles.formBtn} onPress={handleOnClick}>
+                <Pressable style={styles.formBtn} onPress={handleOnSubmit}>
                     <Text style={styles.formBtnText}>{label}</Text>
                 </Pressable>
             )}

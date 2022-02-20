@@ -1,19 +1,35 @@
 import * as React from 'react';
 import { StyleSheet, Text, TextInput, View } from 'react-native';
 import { theme } from '../../styles';
+import { Control, Controller } from 'react-hook-form';
 
 interface FormTextProps {
     label: string;
     placeHolder?: string;
     error: string;
     name: string;
+    control: Control<any>;
 }
 
-export const FormText: React.FunctionComponent<FormTextProps> = ({ label, placeHolder = '', error, name }) => {
+export const FormText: React.FunctionComponent<FormTextProps> = ({ label, placeHolder = '', error, name, control }) => {
     return (
         <View style={styles.textContainer}>
             <Text style={styles.textLabel}>{label}</Text>
-            <TextInput style={styles.textInput} placeholder={placeHolder} nativeID={name} />
+            <Controller
+                name={name}
+                control={control}
+                render={({ field: { onChange, value, onBlur } }) => (
+                    <TextInput
+                        style={styles.textInput}
+                        value={value as string}
+                        onBlur={onBlur}
+                        onChangeText={(value) => onChange(value)}
+                        placeholder={placeHolder}
+                        nativeID={name}
+                    />
+                )}
+            />
+
             {Boolean(error) && (
                 <Text style={styles.textError}>
                     {label} {error}

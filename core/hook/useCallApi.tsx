@@ -16,15 +16,16 @@ export interface ApiResponse<V> {
 export interface ApiErrorResponse<T> {
     details: T;
 }
-export interface ResponseDetails {
+export class ResponseDetails {
     errorMessage?: string;
     message?: string;
 }
 
-export const useCallApi = <T, V>(defaultErrorValue: T) => {
+export const useCallApi = <T extends Record<string, any>, V>(defaultErrorValue: T) => {
+    type DetailsType = T & ResponseDetails;
     const [isLoading, setIsLoading] = React.useState(false);
     const [response, setResponse] = React.useState<V>();
-    const [details, setDetails] = React.useState<T & ResponseDetails>({ ...defaultErrorValue });
+    const [details, setDetails] = React.useState<DetailsType>({ ...defaultErrorValue });
 
     const makeRequest = ({ data, method, url, config }: UseCallApi<T>) => {
         setIsLoading(true);
@@ -32,7 +33,7 @@ export const useCallApi = <T, V>(defaultErrorValue: T) => {
 
         axios[method]<V>(url, data, { ...config })
             .then((req) => setResponse(req.data))
-            .catch(({ response }: { response: { data: ApiErrorResponse<T & ResponseDetails> } }) => setDetails({ ...response.data.details }))
+            .catch(({ response }: { response: { data: ApiErrorResponse<DetailsType> } }) => setDetails({ ...response.data.details }))
             .finally(() => setIsLoading(false));
     };
 
