@@ -58,7 +58,7 @@ export const LoadingWave: React.FC<LoadingWaveProps> = ({ height = theme.gutter 
                 ])
             ),
         ]).start();
-    }, []);
+    }, [scaleFirst, scaleSecond]);
 
     return (
         <View style={loading.container}>

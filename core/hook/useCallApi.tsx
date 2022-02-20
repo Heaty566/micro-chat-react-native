@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { http } from '../api';
+import axios from 'axios';
 import { AxiosRequestConfig } from 'axios';
 
 export interface UseCallApi<T> {
@@ -7,6 +7,14 @@ export interface UseCallApi<T> {
     data: T;
     url: string;
     config?: AxiosRequestConfig;
+}
+
+export interface ApiResponse<V> {
+    data: V;
+}
+
+export interface ApiErrorResponse<T> {
+    details: T;
 }
 export interface ResponseDetails {
     errorMessage?: string;
@@ -22,13 +30,9 @@ export const useCallApi = <T, V>(defaultErrorValue: T) => {
         setIsLoading(true);
         setDetails({ ...defaultErrorValue });
 
-        http[method]<V>(url, data, { ...config })
-            .then((req) => {
-                setResponse(req.data);
-            })
-            .catch((err) => {
-                setDetails(err.data.details);
-            })
+        axios[method]<V>(url, data, { ...config })
+            .then((req) => setResponse(req.data))
+            .catch(({ response }: { response: { data: ApiErrorResponse<T & ResponseDetails> } }) => setDetails({ ...response.data.details }))
             .finally(() => setIsLoading(false));
     };
 
