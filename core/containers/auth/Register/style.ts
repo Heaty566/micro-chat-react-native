@@ -13,17 +13,17 @@ export const styles = StyleSheet.create({
         height: '100%',
     },
     formContainer: {
-        paddingHorizontal: theme.gutter * 4,
-        paddingVertical: theme.gutter * 12,
-        borderRadius: theme.gutter * 2,
+        paddingHorizontal: 4 * 4,
+        paddingVertical: 4 * 12,
+        borderRadius: 4 * 2,
         width: '100%',
         maxWidth: '80%',
         backgroundColor: 'rgba(235, 235, 235, 0.95)',
     },
     formBtn: {
-        marginTop: theme.gutter * 4,
-        paddingHorizontal: theme.gutter,
-        paddingVertical: theme.gutter * 3,
+        marginTop: 4 * 4,
+        paddingHorizontal: 4,
+        paddingVertical: 4 * 3,
         backgroundColor: '#2464EA',
     },
     formBtnText: {

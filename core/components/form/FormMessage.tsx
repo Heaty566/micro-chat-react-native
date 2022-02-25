@@ -25,18 +25,18 @@ export const FormMessage: React.FC<FormMessageProps> = ({ message, errorMessage 
 };
 const styles = StyleSheet.create({
     messageError: {
-        marginTop: theme.gutter,
+        marginTop: 4,
         color: theme.colors.red[500],
-        fontSize: theme.fontSize.sm,
+        fontSize: 14,
         fontWeight: '700',
     },
     messageContainer: {
-        marginVertical: theme.gutter * 2,
+        marginVertical: 4 * 2,
     },
     message: {
-        marginTop: theme.gutter,
+        marginTop: 4,
         color: theme.colors.green[500],
-        fontSize: theme.fontSize.sm,
+        fontSize: 14,
         fontWeight: '700',
     },
 });

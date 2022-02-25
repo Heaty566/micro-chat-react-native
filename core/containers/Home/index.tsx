@@ -1,3 +1,4 @@
+import { Box } from 'native-base';
 import * as React from 'react';
 import { Text, View } from 'react-native';
 import { Link } from 'react-router-native';

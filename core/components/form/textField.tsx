@@ -1,7 +1,8 @@
 import * as React from 'react';
-import { StyleSheet, Text, TextInput, View } from 'react-native';
+
 import { theme } from '../../styles';
 import { Control, Controller } from 'react-hook-form';
+import { Input, FormControl, Box, Stack, Text, KeyboardAvoidingView } from 'native-base';
 
 interface FormTextProps {
     label: string;
@@ -13,50 +14,54 @@ interface FormTextProps {
 
 export const FormText: React.FunctionComponent<FormTextProps> = ({ label, placeHolder = '', error, name, control }) => {
     return (
-        <View style={styles.textContainer}>
-            <Text style={styles.textLabel}>{label}</Text>
-            <Controller
-                name={name}
-                control={control}
-                render={({ field: { onChange, value, onBlur } }) => (
-                    <TextInput
-                        style={styles.textInput}
-                        value={value as string}
-                        onBlur={onBlur}
-                        onChangeText={(value) => onChange(value)}
-                        placeholder={placeHolder}
-                        nativeID={name}
-                    />
-                )}
-            />
-
-            {Boolean(error) && (
-                <Text style={styles.textError}>
-                    {label} {error}
+        <KeyboardAvoidingView keyboardVerticalOffset={10}>
+            <Box mb={2}>
+                <Text mb={1} fontWeight={'semibold'}>
+                    {label}
                 </Text>
-            )}
-        </View>
+                <Controller
+                    name={name}
+                    control={control}
+                    render={({ field: { onChange, value, onBlur } }) => (
+                        <Input
+                            borderWidth={1}
+                            paddingX={8}
+                            paddingY={8}
+                            mb={1}
+                            _focus={{
+                                borderColor: 'tango.500',
+                            }}
+                            backgroundColor={'white'}
+                            borderColor={'gallery.500'}
+                            value={value as string}
+                            onBlur={onBlur}
+                            onChangeText={(value) => onChange(value)}
+                            placeholder={placeHolder}
+                            nativeID={name}
+                        />
+                    )}
+                />
+                {Boolean(error) && (
+                    <Text color={'danger.500'}>
+                        {label} {error}
+                    </Text>
+                )}
+            </Box>
+        </KeyboardAvoidingView>
     );
 };
-const styles = StyleSheet.create({
-    textContainer: {
-        marginBottom: theme.gutter * 6,
-    },
-    textError: {
-        marginTop: theme.gutter,
-        color: theme.colors.red[500],
-        fontSize: theme.fontSize.sm,
-    },
-    textLabel: {
-        color: theme.colors.black,
-        marginBottom: theme.gutter * 2,
-        fontWeight: '700',
-    },
-    textInput: {
-        backgroundColor: theme.colors.white,
-        borderWidth: 1,
-        borderColor: '#EBEBEB',
-        paddingHorizontal: theme.gutter * 2,
-        paddingVertical: theme.gutter * 2,
-    },
-});
+// const styles = StyleSheet.create({
+//     textContainer: {
+//         marginBottom: 4 * 6,
+//     },
+//     textError: {
+//         marginTop: 4,
+//         color: theme.colors.red[500],
+//         fontSize: 12,
+//     },
+//     textLabel: {
+//         color: theme.colors.black,
+//         marginBottom: 4 * 2,
+//         fontWeight: '700',
+//     },
+// });

@@ -1,12 +1,12 @@
 import * as React from 'react';
-import axios from 'axios';
-import { AxiosRequestConfig } from 'axios';
+import axios, { AxiosStatic, AxiosRequestConfig } from 'axios';
 
 export interface UseCallApi<T> {
     method: 'get' | 'post' | 'put';
     data: T;
     url: string;
     config?: AxiosRequestConfig;
+    customHttp?: AxiosStatic;
 }
 
 export interface ApiResponse<V> {
@@ -27,11 +27,12 @@ export const useCallApi = <T extends Record<string, any>, V>(defaultErrorValue: 
     const [response, setResponse] = React.useState<V>();
     const [details, setDetails] = React.useState<DetailsType>({ ...defaultErrorValue });
 
-    const makeRequest = ({ data, method, url, config }: UseCallApi<T>) => {
+    const makeRequest = ({ data, method, url, config, customHttp }: UseCallApi<T>) => {
         setIsLoading(true);
         setDetails({ ...defaultErrorValue });
+        const http = customHttp || axios;
 
-        axios[method]<V>(url, data, { ...config })
+        http[method]<V>(url, data, { ...config })
             .then((req) => setResponse(req.data))
             .catch(({ response }: { response: { data: ApiErrorResponse<DetailsType> } }) => setDetails({ ...response.data.details }))
             .finally(() => setIsLoading(false));
