@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { ImageBackground, ImageSourcePropType, Text, View } from 'react-native';
+import { ImageBackground, ImageSourcePropType } from 'react-native';
 import { styles } from './style';
+import { useMutation } from '@apollo/client';
 import { FormText } from '../../../components/form/TextField';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useCallApi } from '../../../hook/useCallApi';
@@ -9,8 +10,10 @@ import { FormBtn } from '../../../components/form/SubmitBtn';
 import { FormMessage } from '../../../components/form/FormMessage';
 import backgroundImage from '../../../../assets/bg-login.jpg';
 import { useForm } from 'react-hook-form';
-import { Box } from 'native-base';
-
+import { Box, Text } from 'native-base';
+import { routerPaths } from '../../../constant';
+import { Link } from 'react-router-native';
+import { signUpUser } from './action';
 export interface RegisterUserDto {
     fullName: string;
     username: string;
@@ -23,19 +26,38 @@ interface RegisterProps {}
 
 export const Register: React.FC<RegisterProps> = () => {
     const { control, handleSubmit } = useForm<RegisterUserDto>({ defaultValues });
-    const { details, isLoading, makeRequest } = useCallApi<RegisterUserDto, Record<string, unknown>>({ ...defaultValues });
-    const handleOnLogin = (data: RegisterUserDto) => makeRequest({ method: 'post', data, url: `${config.SERVER_URL}/auth/register` });
+    const [callFunction, { error, data, loading }] = useMutation<any, RegisterUserDto>(signUpUser);
+
+    const handleOnLogin = async (data: RegisterUserDto) => {
+        console.log(data);
+        await callFunction({ variables: data });
+    };
+
+    React.useEffect(() => {
+        console.log(error);
+    }, [error]);
+
+    React.useEffect(() => {
+        console.log(loading);
+    }, [loading]);
 
     return (
         <ImageBackground resizeMode="cover" source={backgroundImage as ImageSourcePropType} style={styles.bg}>
             <Box px="4" py="12" bg="rgba(235, 235, 235, 0.95)" width="4/5">
-                <Text style={styles.formHeader}>Sign In</Text>
-                <FormMessage errorMessage={details.errorMessage} message={details.message} />
-                <FormText label="Full name" name="fullName" error={details.fullName} control={control} />
-                <FormText label="Username" name="username" error={details.username} control={control} />
-                <FormText label="Password" name="password" error={details.password} control={control} />
-                <FormText label="Confirm Password" name="confirmPassword" error={details.confirmPassword} control={control} />
-                <FormBtn handleOnSubmit={handleSubmit(handleOnLogin)} isLoading={isLoading} label="Sign In" />
+                <Text textAlign="center" fontWeight="semibold" fontSize="4xl">
+                    Sign Up
+                </Text>
+                {/* <FormMessage errorMessage={details.errorMessage} message={details.message} /> */}
+                <FormText label="Full name" name="fullName" error={''} control={control} />
+                <FormText label="Username" name="username" error={''} control={control} />
+                <FormText label="Password" name="password" error={''} control={control} />
+                <FormText label="Confirm Password" name="confirmPassword" error={''} control={control} />
+                <FormBtn handleOnSubmit={handleSubmit(handleOnLogin)} isLoading={loading} label="Sign Up" />
+                <Link to={routerPaths.authLogin}>
+                    <Text textAlign="center" mt={4} color="tango.500" fontWeight={'semibold'}>
+                        Continue with existed account
+                    </Text>
+                </Link>
             </Box>
         </ImageBackground>
     );

@@ -1,4 +1,7 @@
 {
     "extends": "expo/tsconfig.base",
-    "compilerOptions": { "jsx": "react", "strict": true }
+    "compilerOptions": { "jsx": "react", "strict": true },
+    "resolver": {
+        "sourceExts": ["js", "json", "ts", "tsx", "cjs"]
+    }
 }

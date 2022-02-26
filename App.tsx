@@ -6,6 +6,14 @@ import { NativeBaseProvider } from 'native-base';
 import { routerComponents } from './core/routers';
 import { theme } from './core/styles';
 import { useFonts } from 'expo-font';
+import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client';
+import { config } from './core/config';
+
+export const apolloClient = new ApolloClient({
+    uri: `${config.SERVER_URL}/api/graphql`,
+    credentials: 'include',
+    cache: new InMemoryCache(),
+});
 
 export default function App() {
     const [fontsLoaded] = useFonts({
@@ -19,17 +27,19 @@ export default function App() {
     }
 
     return (
-        <NativeBaseProvider theme={theme}>
-            <NativeRouter>
-                <View style={styles.container}>
-                    <Routes>
-                        <Route path={'/'} element={<routerComponents.authLogin />} />
-                        {/* <Route path={'/'} element={<routerComponents.authRegister />} /> */}
-                        {/* <Route path={routerPaths.home} element={<routerComponents.home />} /> */}
-                    </Routes>
-                </View>
-            </NativeRouter>
-        </NativeBaseProvider>
+        <ApolloProvider client={apolloClient}>
+            <NativeBaseProvider theme={theme}>
+                <NativeRouter>
+                    <View style={styles.container}>
+                        <Routes>
+                            <Route path={routerPaths.authLogin} element={<routerComponents.authLogin />} />
+                            <Route path={routerPaths.authRegister} element={<routerComponents.authRegister />} />
+                            <Route path={routerPaths.home} element={<routerComponents.home />} />
+                        </Routes>
+                    </View>
+                </NativeRouter>
+            </NativeBaseProvider>
+        </ApolloProvider>
     );
 }
 

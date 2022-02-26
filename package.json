@@ -14,10 +14,14 @@
         "clean:cache": "rm -rf node_modules/.cache/babel-loader/*"
     },
     "dependencies": {
+        "@apollo/client": "^3.5.9",
+        "@apollo/react-hooks": "^4.0.0",
+        "apollo-client": "^2.6.10",
         "axios": "^0.26.0",
         "eslint-plugin-react-hooks": "^4.3.0",
         "expo": "~44.0.0",
         "expo-status-bar": "~1.2.0",
+        "graphql": "^16.3.0",
         "native-base": "^3.3.7",
         "react": "17.0.1",
         "react-dom": "17.0.1",
