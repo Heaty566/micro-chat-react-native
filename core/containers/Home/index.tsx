@@ -1,4 +1,4 @@
-import { Box } from 'native-base';
+import { Box, Button } from 'native-base';
 import * as React from 'react';
 import { Text, View } from 'react-native';
 import { Link } from 'react-router-native';
@@ -16,6 +16,7 @@ export const Home: React.FC<HomeProps> = () => {
             <Link to={routerPaths.authRegister} underlayColor="#f0f4f7">
                 <Text>Register</Text>
             </Link>
+            <Button onPress={() => console.log('hello')}>test</Button>
         </View>
     );
 };

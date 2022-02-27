@@ -15,26 +15,30 @@ import { routerPaths } from '../../../constant';
 import { Link } from 'react-router-native';
 import { signUpUser } from './action';
 export interface RegisterUserDto {
-    fullName: string;
+    name: string;
     username: string;
     password: string;
     confirmPassword: string;
 }
-const defaultValues: RegisterUserDto = { username: '', password: '', confirmPassword: '', fullName: '' };
+const defaultValues: RegisterUserDto = { username: '', password: '', confirmPassword: '', name: '' };
 
 interface RegisterProps {}
 
 export const Register: React.FC<RegisterProps> = () => {
     const { control, handleSubmit } = useForm<RegisterUserDto>({ defaultValues });
-    const [callFunction, { error, data, loading }] = useMutation<any, RegisterUserDto>(signUpUser);
+    const [callFunction, { error, data, loading }] = useMutation<any, RegisterUserDto, RegisterUserDto>(signUpUser);
 
     const handleOnLogin = async (data: RegisterUserDto) => {
         console.log(data);
-        await callFunction({ variables: data });
+        try {
+            await callFunction({ variables: data });
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     React.useEffect(() => {
-        console.log(error);
+        console.log(error?.graphQLErrors[0]?.message?.name);
     }, [error]);
 
     React.useEffect(() => {
@@ -48,7 +52,7 @@ export const Register: React.FC<RegisterProps> = () => {
                     Sign Up
                 </Text>
                 {/* <FormMessage errorMessage={details.errorMessage} message={details.message} /> */}
-                <FormText label="Full name" name="fullName" error={''} control={control} />
+                <FormText label="Full name" name="name" error={''} control={control} />
                 <FormText label="Username" name="username" error={''} control={control} />
                 <FormText label="Password" name="password" error={''} control={control} />
                 <FormText label="Confirm Password" name="confirmPassword" error={''} control={control} />
